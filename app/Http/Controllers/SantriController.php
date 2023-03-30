@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Santri;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SantriController extends Controller
 {
@@ -41,7 +42,7 @@ class SantriController extends Controller
             'name' => 'required|max:255',
             'age' => 'required_with:integer|gt:0'
         ]);
-        
+
         Santri::create([
             'name' => $request->name,
             'age' => $request->age,
@@ -49,7 +50,14 @@ class SantriController extends Controller
             'date' => $request->date,
         ]);
 
-        return redirect()->route('santri.index');
+
+        return redirect()->route('santri.index')->with([
+            Alert::success(
+                'Berhasil',
+                'Berhasil Menambah'
+            )
+        ]);
+
     }
 
     /**
@@ -87,14 +95,14 @@ class SantriController extends Controller
             'name' => 'required|max:255',
             'age' => 'required_with:integer|gt:0'
         ]);
-        
+
         $santri = Santri::findOrFail($id);
-            $santri->update([
-                'name' => $request->name,
-                'age' => $request->age,
-                'address' => $request->address,
-                'date' => $request->date
-            ]);
+        $santri->update([
+            'name' => $request->name,
+            'age' => $request->age,
+            'address' => $request->address,
+            'date' => $request->date
+        ]);
 
         return redirect()->route('santri.index');
     }
@@ -110,6 +118,6 @@ class SantriController extends Controller
         $santri = Santri::findOrFail($id);
         $santri->delete();
 
-        return redirect()->route('santri.index');
+        return redirect()->route('santri.index')->with([Alert::success('Berhasil', 'Berhasil dihapus')]);
     }
 }

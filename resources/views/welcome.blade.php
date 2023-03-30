@@ -276,6 +276,8 @@
 
     @yield('content')
 
+    @include('sweetalert::alert')
+
   </main>
 
   <aside id="sidebar" class="sidebar">
